@@ -12,34 +12,19 @@
   @include clearfix;
 }
 
-
-
-@mixin structure-common($columns: $columns, $gutter: $gutter, $padding: $padding, $grouped-styles: false) {
-  @include box-sizing(border-box);
-  *behavior: url("../behaviors/box-sizing/boxsizing.php");
-  overflow: hidden;
-  *zoom: 1;
-
-  @if $grouped-styles and $padding != 0 {
-    padding-left: $padding;
-    padding-right: $padding;
-  }
-
+@mixin structure-isolation($location: 1, $columns: $columns, $gutter: $gutter, $padding: $padding, $grid-location: 'first') {
+  
   @if $dir == ltr or $dir == both {
     @if $grid-location == 'middle' {
-      @if $grouped-styles {
-        margin-right: -100%;
-        float: left;
-        @include grid-clear('left');
-      }
+      margin-right: -100%;
+      float: left;
+      @include grid-clear('left');
       margin-left: grid-span($location - 1, 1, $columns, $gutter) + gutter-span($gutter, $columns);
     }
     @else if $grid-location == 'first' {
-      @if $grouped-styles {
-        margin-right: -100%;
-        float: left;
-        @include grid-clear('left');
-      }
+      margin-right: -100%;
+      float: left;
+      @include grid-clear('left');
       margin-left: 0;
     }
     @else if $grid-location == 'last' {
@@ -50,19 +35,15 @@
   }
   @if $dir == rtl {
     @if $grid-location == 'middle' {
-      @if $grouped-styles {
-        margin-left: -100%;
-        float: right;
-        @include grid-clear('right');
-      }
+      margin-left: -100%;
+      float: right;
+      @include grid-clear('right');
       margin-right: grid-span($location - 1, 1, $columns, $gutter) + gutter-span($gutter, $columns);
     }
     @else if grid-location == 'first' {
-      @if $grouped-styles {
-        margin-left: -100%;
-        float: right;
-        @include grid-clear('right');
-      }
+      margin-left: -100%;
+      float: right;
+      @include grid-clear('right');
       margin-right: 0;
     }
     @else if $grid-location == 'last' {
@@ -74,19 +55,15 @@
   @if $dir == both {
     #{$rtl-selector} & {
       @if $grid-location == 'middle' {
-        @if $grouped-styles {
-          margin-left: -100%;
-          float: right;
-          @include grid-clear('right');
-        }
+        margin-left: -100%;
+        float: right;
+        @include grid-clear('right');
         margin-right: grid-span($location - 1, 1, $columns, $gutter) + gutter-span($gutter, $columns);
       }
       @if $grid-location == 'first' {
-        @if $grouped-styles {
-          margin-left: -100%;
-          float: right;
-          @include grid-clear('right');
-        }
+        margin-left: -100%;
+        float: right;
+        @include grid-clear('right');
         margin-right: 0;
       }
       @if $grid-location == 'last' {
@@ -98,11 +75,70 @@
   }
 }
 
+@mixin structure-float($columns: $columns, $gutter: $gutter, $padding: $padding, $grid-location: 'first') {
+  
+  @if $dir == ltr or $dir == both {
+    @if $grid-location == 'middle' {
+      float: left;
+      @include grid-clear('left');
+      margin-left: gutter-span($gutter, $columns);
+    }
+    @else if $grid-location == 'first' {
+      float: left;
+      @include grid-clear('left');
+      margin-left: 0;
+    }
+    @else if $grid-location == 'last' {
+      float: right;
+      margin-right: 0;
+      @include grid-clear('left');
+    }
+  }
+  @if $dir == rtl {
+    @if $grid-location == 'middle' {
+      float: right;
+      @include grid-clear('right');
+      margin-right: gutter-span($gutter, $columns);
+    }
+    @else if grid-location == 'first' {
+      float: right;
+      @include grid-clear('right');
+      margin-right: 0;
+    }
+    @else if $grid-location == 'last' {
+      float: left;
+      margin-left: 0;
+      @include grid-clear('right');
+    }
+  }
+  @if $dir == both {
+    #{$rtl-selector} & {
+      @if $grid-location == 'middle' {
+        float: right;
+        @include grid-clear('right');
+        margin-right: gutter-span($gutter, $columns);
+      }
+      @if $grid-location == 'first' {
+        float: right;
+        @include grid-clear('right');
+        margin-right: 0;
+      }
+      @if $grid-location == 'last' {
+        float: left;
+        margin-left: 0;
+        @include grid-clear('right');
+      }
+    }
+  }
+}
 
-
-@mixin structure-section($span, $location: $grid-counter, $columns: $columns, $gutter: $gutter, $padding: $padding, $grouped-styles: false) {
+@mixin structure-shared($span, $location: $grid-counter, $columns: $columns, $gutter: $gutter, $padding: $padding, $grouped-styles: false) {
   width: grid-span($span, $location, $columns, $gutter);
-  // add special left padding
+  
+  @include box-sizing(border-box);
+  *behavior: url("../behaviors/box-sizing/boxsizing.php");
+  overflow: hidden;
+  *zoom: 1;
 
   // Padding
   @if type-of($columns) == list {
