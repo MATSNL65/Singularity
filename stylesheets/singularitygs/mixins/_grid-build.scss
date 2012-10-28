@@ -1,10 +1,16 @@
-@mixin grid-build($span, $location, $columns, $gutter, $padding) {
+@mixin grid-build($span, $location, $columns, $gutter, $padding, $output) {
+  $grid-location: grid-location($span, $location, $columns);;
   
-  // common components
-  @include structure-common($columns, $gutter);
+  // Shared Structure
+  @include structure-shared($span, $location, $columns, $gutter);
   
-  // specific styles
-  @include structure-section($span, $location, $columns, $gutter);
+  // If the output is Isolation, use structure-isolation
+  @if $output == 'isolation' {
+    @include structure-isolation($location, $columns, $gutter, $padding, $grid-location);
+  }
+  @else if $output == 'float' {
+    @include structure-float($columns, $gutter, $padding, $grid-location);
+  }
   
   // bump up the counter
   $grid-counter: $location + $span;
