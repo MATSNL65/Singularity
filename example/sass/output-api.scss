@@ -1,0 +1,12 @@
+@import "singularitygs";
+
+$columns: 4, 3, 2, 1;
+$gutter: .25;
+
+#foo {
+  @include grid-span(1, 2);
+}
+
+#bar {
+  @include grid-span(1, 2, $output-api: 'float');
+}
