@@ -43,21 +43,17 @@
 }
 
 // First or last column?
-$grid-location: '';
-
-@mixin grid-location($span, $location, $columns) {
-  $grid-location: '';
-  
+@function grid-location($span, $location, $columns) {
   @if ($span + $location) > column-count($columns) {
-    $grid-location: 'last';
+    @return 'last';
   }
   @else if $location == 1 {
-    $grid-location: 'first';
+    @return 'first';
   }
   @else if $location == column-count($columns) {
-    $grid-location: 'last';
+    @return 'last';
   }
   @else {
-    $grid-location: 'middle';
+    @return 'middle';
   }
 }
